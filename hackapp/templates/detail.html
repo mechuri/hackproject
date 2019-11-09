@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+    <h1> 보여주는 페이지 </h1>
+
+    <div class="view show" onClick="toggleView(0)">
+      <div class="pictureWrap">
+        <div
+            class="picture"
+            {% if post.image %}
+            style="background-image: url('{{ post.image.url }}');"
+            {% endif %}
+        >
+          <div class="title">
+            <p>{{post.title}} / {{post.user}} / 조건: 좋아요 {{post.number}}개 이상</p>
+            <div class="addon">
+              <span
+                {% if user in post.likes.all %}
+                class="heart on"
+                {% else %}
+                class="heart"
+                {% endif %}
+                onClick="window.location.href='{% url 'like_toggle' post.pk %}'">{{post.likes.count}}</span>
+              <span class="date">{{post.created_at}}</span>
+              <i class="close" onClick="window.location.href='/'"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="view list" onClick="toggleView(1)">
+        <div class="tableWrap">
+            <div class="table">
+                
+                <li class="handler">
+                    <img src="/static/images/plusCard.png" alt="도전하기" onClick="toggleSub();" />
+                    <div class="table form sub">
+                        <strong>간판 등록하기</strong>
+                         <form action="{% url 'challenge' post.pk %}" method="POST" enctype = "multipart/form-data">
+                            {% csrf_token %}
+                            <div class="field">
+                                <label for="title">제목</label>
+                                <input type="text" id="title" name="title" placeholder="제목을 입력해주세요" />
+                            </div>
+                            <div class="field">
+                                <label for="file">사진 업로드</label>
+                                <input type="file" id="file" name="image" />
+                            </div>
+                            <button type="submit" class="submit">도전하기</button>
+                        </form>
+                    </div>
+                </li>
+
+                {% for ch in challenges.all %}
+                <li>
+                    {% if ch.image %}
+                    <img src="{{ ch.image.url }}" alt="첨부파일" />
+                    {% endif %}
+                    <div class="title">
+                        <p>{{ ch.title }} / {{ch.user}}</p>
+                        <div class="addon">
+                            <span
+                                {% if user in ch.likes.all %}
+                                class="heart on"
+                                {% else %}
+                                class="heart"
+                                {% endif %}
+                                onClick="window.location.href='{% url 'like_challenge' ch.pk %}'"
+                            >{{ch.likes.count}}</span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+        <!-- {% for ch in post.challenge.all %}
+            {{ ch.title }}<br>
+            {% if ch.image %}
+                <img src="{{ ch.image.url }}"  style="width: 300px; height: auto;" alt="첨부파일"><br>
+            {% endif %}
+            {{ch.likes.count}}명이 좋아합니다.
+            {% if user in ch.likes.all %}
+                <a href="{% url 'like_challenge' ch.pk %}"> 좋아요 취소 </a>
+            {% else %}
+                <a href="{% url 'like_challenge' ch.pk %}"> 좋아요 </a>
+            {% endif %}
+            {{ ch.created_at }}<br>
+
+        
+        {% empty %}
+        <p>아직 도전자가 없습니다</p>
+        {% endfor %} -->
+
+</body>
+
+{% endblock %}

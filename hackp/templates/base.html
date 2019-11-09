@@ -1,0 +1,54 @@
+{% load staticfiles %}
+
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Number 1 Challenge</title>
+    <link
+      href="https://necolas.github.io/normalize.css/latest/normalize.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="http://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="{% static 'home.css' %}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    
+    <header>
+        <a href="{% url 'home' %}"><h1>NO.1 Challenge</h1></a>
+      {% if user.is_authenticated %}
+        <p><a href="{% url 'new' %}">도전 시작하기</a></p>
+      {% else %}
+      <ul>
+        <li><a href="{% url 'account_login' %}">로그인 먼저 해주세요</a></li>
+        <li><a href="{% url 'account_signup' %}">회원가입</a></li>
+      </ul>
+      {% endif %}
+    </header>
+
+    <div id="modal">
+      <div class="modalBody">
+        <p>해당 지역에 간판을 생성하시겠습니까?</p>
+      </div>
+      <div class="modalFooter">
+        <button type="button" onClick="window.location.href='/new'">확인</button>
+        <button type="button" onClick="closeModal()">취소</button>
+      </div>
+    </div>
+    
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    
+
+    <script src="{% static 'home.js' %}"></script>
+  </body>
+</html>
+        

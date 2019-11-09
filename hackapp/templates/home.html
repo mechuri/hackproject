@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+  <body>
+    
+    <div class="greenWrap"></div>
+
+    {% if user.is_authenticated %}
+    <script type="text/javascript">
+    function drawingHuman(){
+      const from = Math.ceil(window.innerWidth / 32) * 4;
+      const len = document.querySelectorAll(".box").length - from;
+      let randomNumber = 0;
+      {% for post in posts %}
+      randomNumber = Math.floor((Math.random()*(len - from + 1)) + from);
+      document.querySelectorAll(".box")[randomNumber].innerHTML =
+      "<img src='/static/images/human.gif' width='32' height='32' onClick='window.location.href=\"{% url 'detail' post.id %}\"' alt='{{ post.title }}' /><div><p>{{ post.title }}</p></div>";
+      {% endfor %}
+    }
+    document.addEventListener("DOMContentLoaded", event => {
+      setTimeout("drawingHuman()", 500);
+    });
+    </script>
+    {% endif %}
+  
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<body>
+    <div class="view">
+      <div class="tableWrap">
+        <div class="table form">
+            <strong>간판 등록하기</strong>
+            <form action="{% url 'create' %}" method="POST" enctype = "multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목을 입력해주세요" />
+                </div>
+                <div class="field">
+                    <label for="file">사진 업로드</label>
+                    <input type="file" id="file" name="image" />
+                </div>
+                <div class="field">
+                    <label for="position">기준</label>
+                    <input type="number" id="position" name="number" min="1" max="500" placeholder="50" />
+                </div>
+                <button type="submit" class="submit">전송</button>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="greenWrap"></div>
+
+{% endblock %}
+
